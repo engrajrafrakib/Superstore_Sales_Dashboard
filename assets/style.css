@@ -1,0 +1,106 @@
+/* Sidebar Stylesheet */
+.sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4%;
+    padding: 0rem 1rem;
+    z-index: 1050;
+    transition: width 0.3s ease-in-out;
+    background-color: #35384b;
+  }
+
+/* When the user hovers on the sidebar, expand it */
+.sidebar:hover {
+  max-width: 768px;
+  width: 8%;
+} 
+
+/* Media Query for adjusting sidebar width based on viewport size */
+/* Adjust the width according to your design needs */
+/* @media screen and (max-width: 768px) {
+  .sidebar {
+      width: 10%; 
+  }
+} */
+
+/* Media Query for adjusting sidebar width based on viewport size */
+/* Adjust the width according to your design needs */
+/* @media screen and (max-width: 768px) {
+  .sidebar:hover {
+      width: 20%; 
+  }
+} */
+
+/* Make sure the contents of the navlink don't wrap when navbar collapses */
+.sidebar .nav-link {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* Fix the width of the icons */
+.sidebar .nav-link i {
+  width: 1rem;
+}
+
+/* Hide the navlink labels by default */
+.sidebar .nav-link span {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* When the sidebar is hovered, reveal the labels */
+.sidebar:hover .nav-link span {
+  visibility: visible;
+  opacity: 1;
+}
+
+.image-title {
+  display: flex;
+  flex-direction: column;
+  /* column-gap: 5px; */
+  align-items: center;
+}
+
+/* .sidebar .image-title img{
+  width: 5rem;
+  flex-direction: row;
+} */
+
+.icon-title {
+  display: flex;
+  flex-direction: column;
+  column-gap: 10px;
+  align-items: center;
+}
+
+/* Hide the image by default */
+.sidebar img {
+  visibility: visible;
+  opacity: 1;
+  width:3rem;
+}
+
+/* When the sidebar is hovered, reveal the image */
+.sidebar:hover img {
+  visibility: visible;
+  opacity: 1;
+  width:5rem;
+}
+
+/* Hide the title by default */
+.sidebar h5 {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* When the sidebar is hovered, reveal the title */
+.sidebar:hover h5 {
+  visibility: visible;
+  opacity: 1;
+}
+
+
