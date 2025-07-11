@@ -1,11 +1,12 @@
 # This page gives the general overview of different properties to analyze the sales data.
 # Import required modules
+import pandas as pd
 from dash import dcc, html, Output, Input, callback
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
 from dash.exceptions import PreventUpdate
-from main import *
+from main import df_main
 
 # Create a list of columns, those are required for the landing page.
 column_list = ['Order Date','Sales','Profit', 'Days to Ship', 'Region', 'Category', 'Segment']

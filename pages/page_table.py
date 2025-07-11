@@ -3,7 +3,7 @@
 from dash import dash_table, dcc, html, Input, Output, callback, State
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
-from main import *
+from main import df_main
 
 # Create a list of columns, those are required for the table page.
 column_list = ['Region','State','City','Order Date','Ship Date','Category','Sub-Category','Sales','Profit', 'Profit Ratio','Discount','Quantity','Segment','Days to Ship','Returned']
