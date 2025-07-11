@@ -1,22 +1,25 @@
-# This page visualize a timeline graph and a bubble graph for the analysis of dirrent useful properties. 
+# This page visualize a timeline graph and a bubble graph for the analysis of different useful properties.
 # Import required modules
-from io import StringIO
+import pandas as pd
 from dash import html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
 import plotly.express as px
-import pandas as pd
 from dash.exceptions import PreventUpdate
 import plotly.graph_objects as go
-from main import *
+from main import df_main
 
 # Create a list of columns, those will be required for the table page.
-column_list = ['Order Date','Ship Date','Customer Name','Region','State','City','Category','Sub-Category','Product Name', 'Ship Mode', 'Sales','Profit', 'Profit Ratio','Discount','Quantity','Segment','Days to Ship','Returned', 'Year', 'Month', 'Quarter', 'Week']
+column_list = ['Order Date', 'Ship Date', 'Customer Name', 'Region', 'State', 'City', 'Category', 'Sub-Category',
+               'Product Name', 'Ship Mode', 'Sales', 'Profit', 'Profit Ratio', 'Discount', 'Quantity', 'Segment',
+               'Days to Ship', 'Returned', 'Year', 'Month', 'Quarter', 'Week']
 # Create page specific initial dataframe.
 df = df_main[column_list]
 
-# List of columns that are considered for the labeling to acheieve bubble size parameter.
+# List of columns that are considered for the labeling to achieve bubble size parameter.
 columns_to_label = ['Customer Name', 'Segment', 'Product Name', 'Ship Mode', 'Category', 'Sub-Category']
 # Function to assign size/labels based on categorized properties. This size is required for the bubble graph.
+
+
 def assign_integer_labels(df_resampled, column_names):
     labels_dict = {}
     for column_name in columns_to_label:
@@ -55,12 +58,14 @@ page_header = dbc.CardGroup([
     dcc.Store(id='store-data', data=[], storage_type='memory'),
     dbc.Card(
         dbc.CardBody([
-            html.H3("Graph Page", className="card-title", style={"font-size":30}),
+            html.H3("Graph Page", className="card-title", style={"font-size": 30}),
             html.P("Data visualization using timeline and bubble charts.", className="card-text")
             ])
         ),
     dbc.Card(
-        html.Div(className="fa-solid fa-chart-simple", style={"color": "white","textAlign": "center","fontSize": 24,"margin": "auto"}),className="bg-primary",style={"maxWidth": 75})], className="mt-4 shadow"
+        html.Div(className="fa-solid fa-chart-simple",
+                 style={"color": "white", "textAlign": "center", "fontSize": 24, "margin": "auto"}),
+        className="bg-primary", style={"maxWidth": 75})], className="mt-4 shadow"
         )
 # Design app layout for the graph page.
 layout = html.Div([
@@ -123,6 +128,8 @@ layout = html.Div([
     ])
 
 # Callback function to reorganize  Dropdown 2 options based on the Dropdown 1 selection.
+
+
 @callback(
     Output('dropdown-2', 'options'),
     [Input('dropdown-1', 'value')]
@@ -136,6 +143,8 @@ def update_dropdown_2_options(selected_value):
         return fs_dropdown_options
     
 # Callback function to reorganize  Dropdown 1 options based on the Dropdown 2 selection.
+
+
 @callback(
     Output('dropdown-1', 'options'),
     [Input('dropdown-2', 'value')]
@@ -149,6 +158,8 @@ def update_dropdown_1_options(selected_value):
         return fs_dropdown_options
     
 # Callback function to update the Buble graph.
+
+
 @callback(
     Output('bubble-graph', 'figure'),
     [Input('date-range-picker', 'start_date'),
@@ -160,14 +171,18 @@ def update_dropdown_1_options(selected_value):
 )
 def update_buble_graph(start_date, end_date, granularity, selected_value_1, selected_value_2, selected_value_3):
     df_date_filtered = df[df['Order Date'].between(start_date, end_date)]
-    df_resampled = df_date_filtered.groupby([pd.Grouper(key='Order Date', freq=granularity), 'Region', 'Customer Name', 'Product Name', 'Ship Mode', 'Segment', 'Category', 'Sub-Category']).agg({
+    df_resampled = df_date_filtered.groupby(
+        [pd.Grouper(key='Order Date', freq=granularity),
+         'Region', 'Customer Name', 'Product Name',
+         'Ship Mode', 'Segment', 'Category', 'Sub-Category'
+         ]).agg({
             'Days to Ship': 'mean',
             'Sales': 'sum',
             'Profit': 'sum',
             'Discount': 'mean',
             'Quantity': 'sum',
             'Returned': 'sum',
-            }).fillna(0) # Fill NaN values with 0 for Week with no data.
+            }).fillna(0)  # Fill NaN values with 0 for Week with no data.
     # Calculate Profit Ratio
     df_resampled['Profit Ratio'] = df_resampled['Profit'] / df_resampled['Sales']
     df_resampled = df_resampled.reset_index()
@@ -175,22 +190,24 @@ def update_buble_graph(start_date, end_date, granularity, selected_value_1, sele
     
     # Validate user selections and update bubble graph accordingly.
     if (selected_value_1 or selected_value_2) and selected_value_3:
-        df_resampled_2 = df_resampled.filter([selected_value_1,selected_value_2, selected_value_3], axis=1)
-        fig = px.scatter(df_resampled_2, x=selected_value_1, y=selected_value_2, size=selected_value_3, size_max=20, title='Bubble Graph', color=df_resampled['Region'], hover_name=df_resampled[selected_value_3[:-6]], hover_data=[df_resampled["Order Date"], df_resampled["Product Name"]], labels={"color": "Region", selected_value_3:selected_value_3[:-6]+'Size', 'hover_data_0':'Order Date', 'hover_data_1':'Product Name'})
+        df_resampled_2 = df_resampled.filter([selected_value_1, selected_value_2, selected_value_3], axis=1)
+        fig = px.scatter(df_resampled_2, x=selected_value_1, y=selected_value_2, size=selected_value_3, size_max=20, title='Bubble Graph', color=df_resampled['Region'], hover_name=df_resampled[selected_value_3[:-6]], hover_data=[df_resampled["Order Date"], df_resampled["Product Name"]], labels={"color": "Region", selected_value_3: selected_value_3[:-6]+'Size', 'hover_data_0': 'Order Date', 'hover_data_1': 'Product Name'})
         return fig
     elif (selected_value_1 or selected_value_2) and selected_value_3 is None:
-        df_resampled_2 = df_resampled.filter([selected_value_1,selected_value_2], axis=1)
+        df_resampled_2 = df_resampled.filter([selected_value_1, selected_value_2], axis=1)
         fig = px.scatter(df_resampled_2, x=selected_value_1, y=selected_value_2, title='Bubble Graph', color=df_resampled['Region'], labels={"color": "Region"})
         return fig
-    
+
     elif (selected_value_1 is None and selected_value_2 is None):
-        df_resampled_2 = df_resampled.filter([selected_value_1,selected_value_2], axis=1)
+        df_resampled_2 = df_resampled.filter([selected_value_1, selected_value_2], axis=1)
         fig = px.scatter(df_resampled_2, x=selected_value_1, y=selected_value_2, title='Bubble Graph')
         return fig
     else:
         raise PreventUpdate
 
 # Callback function to update Timeline graph.    
+
+
 @callback(
     Output('timeline-graph', 'figure'),
     [Input('granularity-dropdown', 'value'),
@@ -198,8 +215,8 @@ def update_buble_graph(start_date, end_date, granularity, selected_value_1, sele
      Input('date-range-picker', 'end_date')]
 )
 def update_timeline_graph(granularity, start_date, end_date):
-    # Reducing dataframe size by considering only relevent fields.
-    list_columns = ['Order Date', 'Days to Ship', 'Returned','Sales','Profit']
+    # Reducing dataframe size by considering only relevant fields.
+    list_columns = ['Order Date', 'Days to Ship', 'Returned', 'Sales', 'Profit']
     df_filtered = df[list_columns]
     # Filter data based on the date filter.
     df_date_filtered = df_filtered[df_filtered['Order Date'].between(start_date, end_date)]
@@ -210,7 +227,7 @@ def update_timeline_graph(granularity, start_date, end_date):
         'Sales': 'sum',
         'Profit': 'sum',
         'Returned': 'sum'
-        }).fillna(0).reset_index() # Fill NaN values with 0
+        }).fillna(0).reset_index()  # Fill NaN values with 0
     # Reformat dates for better visualization and readability in the timeline graph.
     if granularity == 'W':
         df_resampled['Order Date'] = df_resampled['Order Date'].dt.year.astype(str) + 'CW' + df_resampled['Order Date'].dt.isocalendar().week.astype(str) 
@@ -235,6 +252,6 @@ def update_timeline_graph(granularity, start_date, end_date):
                 markers=True,
                 log_y=True))
     fig.update_layout(template='plotly_white')
-    fig.update_xaxes(tickformat='%Y-%m-%d',mirror=True, ticks='outside', showline=False, linecolor='white', gridcolor='white')
+    fig.update_xaxes(tickformat='%Y-%m-%d', mirror=True, ticks='outside', showline=False, linecolor='white', gridcolor='white')
     fig.update_yaxes(ticks='outside', showline=False, linecolor='white', gridcolor='white')
     return fig

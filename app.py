@@ -3,7 +3,7 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-from main import *
+from main import font_awesome
 
 # Connect to app pages
 from pages import page_landing, page_table, page_graph
@@ -52,6 +52,8 @@ app.layout = html.Div([
     ])
 
 # Callback function to communicate with all pages
+
+
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
@@ -62,7 +64,7 @@ def display_page(pathname):
     elif pathname == '/pages/graph':
         return page_graph.layout
 
+
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True, port=8080)
-

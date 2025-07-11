@@ -1,6 +1,6 @@
 # This page visualize the datatable with some feature for filtering and insertion of new records.
 # Import required modules
-from dash import Dash, dash_table, dcc, html, Input, Output, callback, State
+from dash import dash_table, dcc, html, Input, Output, callback, State
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
 from main import *
@@ -17,7 +17,7 @@ page_header = dbc.CardGroup([
     dbc.Card(
         dbc.CardBody(
             [
-                html.H3("Superstore Sales Data Table", className="card-title", style={"font-size":30}),
+                html.H3("Sales Data Table", className="card-title", style={"font-size":30}),
                 html.P("Mostly utilized data are displayed in this datatable.", className="card-text"),
             ])
         ),

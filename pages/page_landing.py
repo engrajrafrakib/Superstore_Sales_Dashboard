@@ -19,7 +19,7 @@ page_header = dbc.CardGroup([
     dbc.Card(
             dbc.CardBody([
                     html.H3("Landing Page", className="card-title", style={"font-size":30}),
-                    html.P("General overview of the Superstore Sales Data.", className="card-text")
+                    html.P("General overview of the Sales Data.", className="card-text")
                     ])
             ),
         dbc.Card(
