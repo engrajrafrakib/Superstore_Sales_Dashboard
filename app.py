@@ -18,7 +18,7 @@ app.layout = html.Div([
     dbc.Col([
         html.Div([
             html.Div([
-                html.H5("Dashboard", style={'color': 'White', 'margin-top': '10px'}),
+                html.H5("Datalytix", style={'color': 'White', 'margin-top': '10px'}),
                 html.Img(src="/assets/icon_dashboard.png"),
                 ], className='image-title'),
             html.Hr(),

@@ -50,12 +50,14 @@ page_header = dbc.Card(
     dbc.CardBody([
         html.H2("Sales Dashboard", className="card-title", style={'color': COLOR_DARK}),
         html.P("General overview of the Sales Data", className="card-text", style={'color': COLOR_DARK}),
-        html.Hr(style={'borderTop': f'2px solid {COLOR_PRIMARY}'})
+        # html.Hr(style={'borderTop': f'2px solid {COLOR_PRIMARY}'})
     ],
         style={
             **CARD_STYLE,
             'borderLeft': f'5px solid {COLOR_PRIMARY}',
-            'marginTop': '20px'
+            'marginTop': '20px',
+            'background': 'linear-gradient(90deg,rgba(42, 123, 155, 1) 9%, rgba(87, 199, 133, 1) 100%, rgba(237, 221, 83, 1) 100%)'
+
         }
     ))
 
